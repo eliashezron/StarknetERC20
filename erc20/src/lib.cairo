@@ -1,7 +1,7 @@
 
 use starknet:: ContractAddress;
 #[starknet::interface]
-trait IERC20<TContractState>{
+trait IERC20<TContractState>{ // similar to interface IERC20 in Solidity
     fn get_name(self: @TContractState)-> felt252;
     fn get_symbol(self: @TContractState)-> felt252;
     fn get_decimals(self: @TContractState)-> u8;
@@ -16,43 +16,43 @@ trait IERC20<TContractState>{
 }
 
 #[starknet::contract]
-mod ERC20{
+mod ERC20{ // similar to contract ERC20
 
     // importing necessary libraries
     use starknet::ContractAddress;
-    use starknet::get_caller_address;
+    use starknet::get_caller_address; // similar to msg.sender in Solidity
     use starknet::contract_address_const; //similar to address(0) in Solidity
     use zeroable::Zeroable;
     use super::IERC20;
  
-    //Stroge Variables
+    //Stroge Variables 
     #[storage]
-    struct Storage {
+    struct Storage { // similar to the storage variable contract ERC20
         name: felt252,
         symbol: felt252,
         decimals: u8,
         total_supply: u256,
-        balances: LegacyMap<ContractAddress, u256>,
+        balances: LegacyMap<ContractAddress, u256>, //similar to mapping(address => uint256)
         allowances: LegacyMap<(ContractAddress, ContractAddress), u256>, //similar to mapping(address => mapping(address => uint256))
 
     } 
-//  Event
-    #[event]
-    #[derive(Drop, starknet::Event)]
-    enum Event{
+    //  Event
+    #[event] // similar to events in Solidity
+    #[derive(Drop, starknet::Event)] //must include drop to drop after use
+    enum Event{ //must be defined as enum
         Approval: Approval,
         Transfer: Transfer
     }
 
     #[derive(Drop, starknet::Event)]
-    struct Transfer{
+    struct Transfer{ // similar to event Transfer in Solidity
         from: ContractAddress,
         to: ContractAddress,
         value: u256
     }
 
 #[derive(Drop, starknet::Event)]
-    struct Approval{
+    struct Approval{ // similar to event Approval in Solidity
         owner: ContractAddress,
         spender: ContractAddress,
         value: u256,
